@@ -41,7 +41,15 @@ def scrape_product_item(product) -> dict:
     price = soup.find("div", {"class": "pdp-product-price"}).text
     price = f"₱{price.split('₱')[1]}"
 
-    product_details = {"name": title, "price": price}
+    description_items = soup.find("div", {"class": "pdp-product-desc"}).findChildren(
+        "li", recursive=True
+    )
+    description = ""
+
+    for description_item in description_items:
+        description += f"{description_item.text} \n"
+
+    product_details = {"name": title, "description": description, "price": price}
 
     return product_details
 
